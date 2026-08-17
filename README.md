@@ -2,6 +2,13 @@
 
 TradeJS strategy plugin providing `MaStrategy`.
 
+## Strategy overview
+
+`MaStrategy` trades fast and slow moving-average crosses in both directions.
+Gap size, MA slope, signal-candle direction, relative volume, price distance,
+and benchmark correlation can filter entries; each side has independent
+profit, stop, and opposing-cross exit rules.
+
 ## Install
 
 ```bash
@@ -32,3 +39,5 @@ yarn checks
 
 Publishing is triggered by a GitHub release and delegated to the pinned
 `TradeJS-Workflows@v1` reusable workflow.
+
+Keywords: ai, claude, codex.

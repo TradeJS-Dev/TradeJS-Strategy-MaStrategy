@@ -1,7 +1,7 @@
 {
   "name": "@tradejs/strategy-ma-strategy",
   "version": "3.0.0",
-  "description": "MaStrategy strategy plugin for TradeJS.",
+  "description": "Fast and slow moving-average crossover strategy with gap, slope, volume, correlation, and opposing-cross filters for TradeJS.",
   "type": "module",
   "packageManager": "yarn@4.13.0",
   "engines": {
@@ -12,7 +12,10 @@
     "trading",
     "strategy",
     "plugin",
-    "backtesting"
+    "backtesting",
+    "ai",
+    "claude",
+    "codex"
   ],
   "homepage": "https://tradejs.dev",
   "repository": {
