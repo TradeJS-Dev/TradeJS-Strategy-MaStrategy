@@ -9,6 +9,10 @@ Gap size, MA slope, signal-candle direction, relative volume, price distance,
 and benchmark correlation can filter entries; each side has independent
 profit, stop, and opposing-cross exit rules.
 
+## Logic at a glance
+
+![MaStrategy strategy logic](https://raw.githubusercontent.com/TradeJS-Dev/TradeJS-Strategy-MaStrategy/main/docs/strategy-logic.svg)
+
 ## Install
 
 ```bash
