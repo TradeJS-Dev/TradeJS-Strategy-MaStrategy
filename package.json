@@ -1,6 +1,6 @@
 {
   "name": "@tradejs/strategy-ma-strategy",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Fast and slow moving-average crossover strategy with gap, slope, volume, correlation, and opposing-cross filters for TradeJS.",
   "type": "module",
   "packageManager": "yarn@4.13.0",
