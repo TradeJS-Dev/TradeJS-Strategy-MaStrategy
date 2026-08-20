@@ -1,9 +1,12 @@
 import { defineStrategyPlugin } from "@tradejs/core/config";
-import type { StrategyConfig, StrategyRegistryEntry } from "@tradejs/types";
+import type { ValidatedStrategyRegistryEntry } from "@tradejs/strategy-kit/config";
+import type { StrategyConfig } from "@tradejs/types";
 import { config as maStrategyDefaultConfig } from "./MaStrategy/config";
 import { MaStrategyDefinition } from "./MaStrategy/strategy";
 
-export const strategyEntries: StrategyRegistryEntry[] = [MaStrategyDefinition];
+export const strategyEntries: ValidatedStrategyRegistryEntry<any>[] = [
+  MaStrategyDefinition,
+];
 
 const defaultConfigs: Record<string, StrategyConfig> = {
   MaStrategy: maStrategyDefaultConfig,
