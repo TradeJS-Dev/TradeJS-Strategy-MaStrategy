@@ -13,6 +13,15 @@ profit, stop, and opposing-cross exit rules.
 
 ![MaStrategy strategy logic](https://raw.githubusercontent.com/TradeJS-Dev/TradeJS-Strategy-MaStrategy/main/docs/strategy-logic.svg)
 
+## Signal on an example chart
+
+The blue fast average crosses above the amber slow average; gap, slope, candle, volume, distance, and optional benchmark filters decide whether the cross is tradable.
+
+![MaStrategy signal on an illustrative ticker chart](https://raw.githubusercontent.com/TradeJS-Dev/TradeJS-Strategy-MaStrategy/main/docs/signal-example.svg)
+
+The illustration is schematic, not market data. Exact thresholds, confirmation
+rules, and risk parameters come from the active TradeJS strategy config.
+
 ## Install
 
 ```bash
