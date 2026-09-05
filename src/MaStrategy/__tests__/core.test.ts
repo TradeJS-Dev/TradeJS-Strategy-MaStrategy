@@ -1,6 +1,7 @@
 /** @jest-environment node */
 
 import { config as DEFAULT_CONFIG } from "../config";
+import { getDirectionalTpSlPrices } from "@tradejs/core/strategies";
 import {
   createMaStrategyCore,
   getMaCrossQuality,
@@ -52,13 +53,9 @@ const getMockIndicatorsContext = () => {
 const makeStrategyApi = ({
   marketData,
   currentPosition = null,
-  riskRatio = 2,
-  qty = 3,
 }: {
   marketData: any;
   currentPosition?: any;
-  riskRatio?: number;
-  qty?: number;
 }) => {
   const lastTradeController = {
     isInCooldown: jest.fn(() => false),
@@ -80,12 +77,7 @@ const makeStrategyApi = ({
     }),
     getCurrentPosition: jest.fn(async () => currentPosition),
     createLastTradeController: jest.fn(() => lastTradeController),
-    getDirectionalTpSlPrices: jest.fn(() => ({
-      stopLossPrice: 98,
-      takeProfitPrice: 104,
-      riskRatio,
-      qty,
-    })),
+    getDirectionalTpSlPrices: jest.fn(getDirectionalTpSlPrices),
     entry: jest.fn(async (params: any) => ({
       kind: "entry",
       code: params.code,
@@ -196,9 +188,9 @@ describe("MaStrategy core", () => {
         code: "MA_BULLISH_CROSS",
         direction: "LONG",
         orderPlan: {
-          qty: 3,
-          stopLossPrice: 98,
-          takeProfits: [{ rate: 1, price: 104 }],
+          qty: expect.any(Number),
+          stopLossPrice: 101.97,
+          takeProfits: [{ rate: 1, price: 105.06 }],
         },
         additionalIndicators: expect.objectContaining({
           crossKind: "bullish",
@@ -207,6 +199,10 @@ describe("MaStrategy core", () => {
       }),
     );
     expect((result as any).figures.lines).toHaveLength(2);
+    const plan = strategyApi.entry.mock.calls[0][0].orderPlan;
+    expect(
+      plan.qty * (103 - 101.97 + (103 + 101.97) * DEFAULT_CONFIG.RISK_FEE_RATE),
+    ).toBeCloseTo(DEFAULT_CONFIG.MAX_LOSS_VALUE, 8);
     expect((result as any).figures.lines[0].points).toEqual([
       { timestamp: candles[0].timestamp, value: 99 },
       { timestamp: candles[1].timestamp, value: 102 },
