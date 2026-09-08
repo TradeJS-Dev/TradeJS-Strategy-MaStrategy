@@ -1,4 +1,5 @@
 import { round } from "@tradejs/core/math";
+import { buildTradeEconomics } from "@tradejs/strategy-kit/risk";
 
 import { MaStrategyConfig } from "./config";
 import { buildMaStrategyFigures } from "./figures";
@@ -228,7 +229,7 @@ export const createMaStrategyCore: CreateStrategyCore<
   MaStrategyConfig,
   IndicatorsHistorySnapshot | undefined
 > = async ({ config, strategyApi, indicatorsState }) => {
-  const { FEE_PERCENT, MAX_LOSS_VALUE, TRADE_COOLDOWN_MS, LONG, SHORT } =
+  const { RISK_FEE_RATE, MAX_LOSS_VALUE, TRADE_COOLDOWN_MS, LONG, SHORT } =
     config;
 
   const lastTradeController = strategyApi.createLastTradeController({
@@ -299,16 +300,26 @@ export const createMaStrategyCore: CreateStrategyCore<
       return strategyApi.skip("TRADE_COOLDOWN");
     }
 
-    const { stopLossPrice, takeProfitPrice, riskRatio, qty } =
+    const { stopLossPrice, takeProfitPrice } =
       strategyApi.getDirectionalTpSlPrices({
         price: currentPrice,
         direction: modeConfig.direction,
         takeProfitDelta: modeConfig.TP,
         stopLossDelta: modeConfig.SL,
         unit: "percent",
-        maxLossValue: MAX_LOSS_VALUE,
-        feePercent: Number(FEE_PERCENT ?? 0),
       });
+
+    const economics = buildTradeEconomics({
+      entryPrice: currentPrice,
+      stopLossPrice,
+      takeProfitPrice,
+      feeRate: Number(RISK_FEE_RATE),
+      slippageBps: config.RISK_SLIPPAGE_BPS + config.RISK_MARKET_IMPACT_BPS,
+    });
+    const qty =
+      economics.lossPerUnit > 0 ? MAX_LOSS_VALUE / economics.lossPerUnit : 0;
+    // Preserve this strategy's gross-RR admission policy; costs affect sizing.
+    const riskRatio = economics.grossRiskRatio;
 
     if (!qty || !Number.isFinite(qty) || qty <= 0) {
       return strategyApi.skip("INVALID_QTY");
