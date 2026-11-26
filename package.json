@@ -1,6 +1,6 @@
 {
   "name": "@tradejs/strategy-ma-strategy",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "MaStrategy compares two moving averages.",
   "type": "module",
   "packageManager": "yarn@4.13.0",
