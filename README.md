@@ -1,6 +1,9 @@
 # @tradejs/strategy-ma-strategy
 
-TradeJS strategy plugin providing `MaStrategy`.
+MaStrategy compares two moving averages. It looks for a signal when the
+average that reacts faster to price crosses the slower one.
+
+[See examples and configuration in the TradeJS Marketplace](https://tradejs.dev/marketplace/ma-strategy).
 
 ## Strategy overview
 
